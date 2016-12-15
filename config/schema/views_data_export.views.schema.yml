@@ -4,6 +4,12 @@ views.display.data_export:
   type: views_display_path
   label: 'Data export display options'
   mapping:
+    displays:
+      type: sequence
+      label: 'Attach to'
+      sequence:
+        type: string
+        label: 'Display'
     filename:
       type: string
       label: 'Downloaded filename'
