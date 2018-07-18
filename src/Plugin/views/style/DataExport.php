@@ -36,6 +36,7 @@ class DataExport extends Serializer {
       'strip_tags' => ['default' => TRUE],
       'trim' => ['default' => TRUE],
       'encoding' => ['default' => 'utf8'],
+      'utf8_bom' => ['default' => FALSE],
     ];
 
     // XLS options.
@@ -131,6 +132,12 @@ class DataExport extends Serializer {
               'utf8' => $this->t('UTF-8'),
             ],
             '#default_value' => $csv_options['encoding'],
+          ],
+          'utf8_bom' => [
+            '#type' => 'checkbox',
+            '#title' => $this->t('Include unicode signature (<a href="@bom" target="_blank">BOM</a>).',
+              ['@bom' => 'https://www.w3.org/International/questions/qa-byte-order-mark']),
+            '#default_value' => $csv_options['utf8_bom'],
           ],
         ];
 
