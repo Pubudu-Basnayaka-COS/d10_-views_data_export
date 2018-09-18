@@ -218,4 +218,12 @@ class DataExport extends RestExport {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getAvailableGlobalTokens($prepared = FALSE, array $types = []) {
+    $types += ['date'];
+    return parent::getAvailableGlobalTokens($prepared, $types);
+  }
+
 }
