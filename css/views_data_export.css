@@ -13,8 +13,11 @@
   background-image: url(../images/csv.png);
   width: 36px;
 }
-.xlsx-feed .feed-icon,
 .xls-feed .feed-icon {
   background-image: url(../images/xls.png);
   width: 36px;
+}
+.xlsx-feed .feed-icon {
+  background-image: url(../images/xlsx.png);
+  width: 43px;
 }

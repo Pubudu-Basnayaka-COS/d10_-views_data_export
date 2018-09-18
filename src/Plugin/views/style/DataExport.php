@@ -150,7 +150,12 @@ class DataExport extends Serializer {
           '#title' => $this->t('XLS settings'),
           '#tree' => TRUE,
           '#states' => [
-            'visible' => [':input[name="style_options[formats]"]' => ['value' => 'xls']],
+            'visible' => [
+              ':input[name="style_options[formats]"]' => [
+                ['value' => 'xls'],
+                ['value' => 'xlsx'],
+              ],
+            ],
           ],
           'xls_format' => [
             '#type' => 'select',
@@ -159,6 +164,9 @@ class DataExport extends Serializer {
               // @todo Add all PHPExcel supported formats.
               'Excel2007' => $this->t('Excel 2007'),
               'Excel5' => $this->t('Excel 5'),
+            ],
+            '#states' => [
+              'visible' => [':input[name="style_options[formats]"]' => ['value' => 'xls']],
             ],
             '#default_value' => $xls_options['xls_format'],
           ],
