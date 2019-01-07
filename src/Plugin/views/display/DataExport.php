@@ -149,7 +149,7 @@ class DataExport extends RestExport {
         $form['filename'] = [
           '#type' => 'textfield',
           '#title' => $this->t('Filename'),
-          '#default_value' => $this->options['filename'],
+          '#default_value' => $this->getOption('filename'),
           '#description' => $this->t('The filename that will be suggested to the browser for downloading purposes. You may include replacement patterns from the list below.'),
         ];
         // Support tokens.
