@@ -5,8 +5,10 @@ namespace Drupal\views_data_export\Plugin\views\display;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Cache\CacheableResponse;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\rest\Plugin\views\display\RestExport;
 use Drupal\views\ViewExecutable;
+use Drupal\views\Views;
 
 /**
  * Provides a data export display plugin.
@@ -49,34 +51,16 @@ class DataExport extends RestExport {
     $cache_metadata = CacheableMetadata::createFromRenderArray($build);
     $response->addCacheableDependency($cache_metadata);
 
+    // Set filename if such exists.
+    $view = Views::getView($view_id);
+    $view->setDisplay($display_id);
+    if ($filename = $view->getDisplay()->getOption('filename')) {
+      $bubbleable_metadata = BubbleableMetadata::createFromObject($cache_metadata);
+      $response->headers->set('Content-Disposition', 'attachment; filename="' . \Drupal::token()->replace($filename, ['view' => $view], [], $bubbleable_metadata) . '"');
+    }
     $response->headers->set('Content-type', $build['#content_type']);
 
     return $response;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function render() {
-
-    // Add the content disposition header if a custom filename has been used.
-    if (($response = $this->view->getResponse()) && $this->getOption('filename')) {
-      $response->headers->set('Content-Disposition', 'attachment; filename="' . $this->generateFilename($this->getOption('filename')) . '"');
-    }
-
-    return parent::render();
-  }
-
-  /**
-   * Given a filename and a view, generate a filename.
-   *
-   * @param $filename_pattern
-   *   The filename, which may contain replacement tokens.
-   * @return string
-   *   The filename with any tokens replaced.
-   */
-  protected function generateFilename($filename_pattern) {
-    return $this->globalTokenReplace($filename_pattern);
   }
 
   /**
@@ -133,7 +117,8 @@ class DataExport extends RestExport {
       $options['style']['value'] .= $this->t(' (@export_format)', ['@export_format' => reset($style_options['formats'])]);
     }
   }
-    /**
+
+  /**
    * {@inheritdoc}
    */
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
