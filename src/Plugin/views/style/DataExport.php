@@ -271,4 +271,25 @@ class DataExport extends Serializer {
     ];
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function buildSortPost() {
+    $query = $this->view->getRequest()->query;
+    $sort_field = $query->get('order');
+
+    if (empty($sort_field) || empty($this->view->field[$sort_field])) {
+      return;
+    }
+
+    // Ensure sort order is valid.
+    $sort_order = strtolower($query->get('sort'));
+    if (empty($sort_order) || ($sort_order != 'asc' && $sort_order != 'desc')) {
+      $sort_order = 'asc';
+    }
+
+    // Tell the field to click sort.
+    $this->view->field[$sort_field]->clickSort($sort_order);
+  }
+
 }
