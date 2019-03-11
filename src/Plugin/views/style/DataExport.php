@@ -229,6 +229,9 @@ class DataExport extends Serializer {
     if ($input) {
       $url_options['query'] = $input;
     }
+    if ($pager = $this->view->getPager()) {
+      $url_options['query']['page'] = $pager->getCurrentPage();
+    }
     $url_options['absolute'] = TRUE;
     if (!empty($this->options['formats'])) {
       $url_options['query']['_format'] = reset($this->options['formats']);
