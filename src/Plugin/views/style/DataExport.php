@@ -22,6 +22,13 @@ use Drupal\rest\Plugin\views\style\Serializer;
 class DataExport extends Serializer {
 
   /**
+   * Field labels should be enabled by default for this Style.
+   *
+   * @var bool
+   */
+  protected $defaultFieldLabels = TRUE;
+
+  /**
    * {@inheritdoc}
    */
   public function defineOptions() {
