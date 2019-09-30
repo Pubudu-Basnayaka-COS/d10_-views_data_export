@@ -174,8 +174,15 @@ class DataExport extends RestExport {
     $clone->setArguments($this->view->args);
     $clone->setDisplay($this->display['id']);
     $clone->buildTitle();
+    $displays = $clone->storage->get('display');
+    $title = $clone->getTitle();
+
+    if (!empty($displays[$this->display['id']])) {
+      $title = $displays[$this->display['id']]['display_title'];
+    }
+
     if ($plugin = $clone->display_handler->getPlugin('style')) {
-      $plugin->attachTo($build, $display_id, $clone->getUrl(), $clone->getTitle());
+      $plugin->attachTo($build, $display_id, $clone->getUrl(), $title);
       foreach ($clone->feedIcons as $feed_icon) {
         $this->view->feedIcons[] = $feed_icon;
       }
