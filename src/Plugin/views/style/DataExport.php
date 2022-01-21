@@ -237,7 +237,9 @@ class DataExport extends Serializer {
     $rows = [];
     foreach ($this->view->result as $row_index => $row) {
       $this->view->row_index = $row_index;
-      $rows[] = $this->view->rowPlugin->render($row);
+      $output = $this->view->rowPlugin->render($row);
+      \Drupal::moduleHandler()->alter('views_data_export_row', $output, $row, $this->view);
+      $rows[] = $output;
     }
 
     unset($this->view->row_index);
